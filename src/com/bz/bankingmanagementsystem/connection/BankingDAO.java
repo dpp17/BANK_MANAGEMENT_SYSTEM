@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import com.bz.bankingmanagementsystem.exceptions.AccountNotFound;
 
-public class ConnectionJDBC {
+public class BankingDAO {
 
 	static int balance = 0;
 	static long accountNumberOne = 0; 
@@ -14,8 +14,7 @@ public class ConnectionJDBC {
 	
 	////////////////// CHECK_VALID_ACCOUNT /////////////////////
 	private static boolean CheckAccountNumber(long accountNumber) throws  ClassNotFoundException, SQLException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Banking_Management","root","Lambop@12345");
+		Connection con = ConnectDB.getInstance().getConnection();
 		Statement statement = con.createStatement();
 		ResultSet res = statement.executeQuery("select * from AccountDetails where accountNumber = "+accountNumber+";");
 		if(res.getRow() == 0) {
@@ -38,8 +37,7 @@ public class ConnectionJDBC {
 		System.out.println(" Enter Withdraw_Ammount ::");
 		int withdraw = userInput.nextInt();
 		
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Banking_Management","root","Lambop@12345");
+		Connection con = ConnectDB.getInstance().getConnection();
 		Statement statement = con.createStatement();
 		ResultSet res = statement.executeQuery("select * from AccountDetails where accountNumber = "+accountNumber+" and pinNumber = "+pin+";");
 		while(res.next()) {
@@ -81,8 +79,7 @@ public class ConnectionJDBC {
 		System.out.println(" Enter Deposit_Ammount ::");
 		int deposit = userInput.nextInt();
 	
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Banking_Management",        "root",          "Lambop@12345");
+		Connection con = ConnectDB.getInstance().getConnection();
 		Statement statement = con.createStatement();
 		ResultSet res = statement.executeQuery("select * from AccountDetails where accountNumber = "+accountNumber+" and pinNumber = "+pin+";");
 		while(res.next()) {

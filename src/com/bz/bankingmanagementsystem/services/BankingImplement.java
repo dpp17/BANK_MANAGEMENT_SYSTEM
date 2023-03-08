@@ -2,13 +2,13 @@ package com.bz.bankingmanagementsystem.services;
 
 import java.sql.SQLException;
 
-import com.bz.bankingmanagementsystem.connection.ConnectionJDBC;
+import com.bz.bankingmanagementsystem.connection.BankingDAO;
 import com.bz.bankingmanagementsystem.exceptions.AccountNotFound;
 import com.bz.bankingmanagementsystem.interfaces.IBanking;
 
 public class BankingImplement implements IBanking{
 
-	static ConnectionJDBC connection = new ConnectionJDBC();
+	static BankingDAO connection = new BankingDAO();
 	
 	public void welcomeDisplay() {
 		System.err.println("===================================");
