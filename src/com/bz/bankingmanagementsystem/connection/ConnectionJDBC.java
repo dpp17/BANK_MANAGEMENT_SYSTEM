@@ -30,7 +30,6 @@ public class ConnectionJDBC {
 		System.out.println(" Enter AccountNumber :: ");
 		long accountNumber = userInput.nextLong();
 		if(!CheckAccountNumber(accountNumber)) {
-			System.err.println("asdasdasda");
 			throw new AccountNotFound(" :: Account not found :: ");
 		}
 		else {
@@ -47,18 +46,20 @@ public class ConnectionJDBC {
 			balance = res.getInt("balance");
 			if(balance < withdraw) {
 				System.out.println(" In-sufficient Balance :: "  + balance);
+				withdraw = 0;
 			}else {
 			balance = balance - withdraw;
 			}
 		}
 		statement.close();
 		
-		PreparedStatement statement2 = con.prepareStatement("Update AccountDetails set balance = "+balance+" where accountNumber = "+accountNumber+";");
-		
-				int confirm = statement2.executeUpdate();
+		PreparedStatement statement2 = con.prepareStatement("Update AccountDetails set balance = ? where accountNumber = ?;");
+		statement2.setInt(1, balance);
+		statement2.setLong(2, accountNumber);
+		int confirm = statement2.executeUpdate();
 		System.out.println(confirm);
-		System.out.println(balance + " :: Remaining Balance");
-		System.out.println(withdraw + " ::  Withdrawl Amount");
+		System.out.println(balance + " :: Total Balance");
+		System.out.println(withdraw + " ::  Debited Amount");
 		
 		statement2.close();
 		con.close();
@@ -72,14 +73,13 @@ public class ConnectionJDBC {
 		System.out.println(" Enter AccountNumber :: ");
 		long accountNumber = userInput.nextLong();
 		if(!CheckAccountNumber(accountNumber)) {
-			System.err.println("sadasdascasc");
 			throw new AccountNotFound(" :: Account not found :: ");
 		}
 		else {
 		System.out.println(" Enter pinNumber ::");
 		int pin = userInput.nextInt();
-		System.out.println(" Enter Withdraw_Ammount ::");
-		int withdraw = userInput.nextInt();
+		System.out.println(" Enter Deposit_Ammount ::");
+		int deposit = userInput.nextInt();
 	
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Banking_Management",        "root",          "Lambop@12345");
@@ -87,16 +87,17 @@ public class ConnectionJDBC {
 		ResultSet res = statement.executeQuery("select * from AccountDetails where accountNumber = "+accountNumber+" and pinNumber = "+pin+";");
 		while(res.next()) {
 			balance = res.getInt("balance");
-			balance = balance + withdraw;
+			balance = balance + deposit;
 		}
 		statement.close();
 		
-		PreparedStatement statement2 = con.prepareStatement("Update AccountDetails set balance = "+balance+" where accountNumber = "+accountNumber+";");
-		
-				int confirm = statement2.executeUpdate();
+		PreparedStatement statement2 = con.prepareStatement("Update AccountDetails set balance = ? where accountNumber = ?;");
+		statement2.setInt(1, balance);
+		statement2.setLong(2, accountNumber);
+		int confirm = statement2.executeUpdate();
 		System.out.println(confirm);
-		System.out.println(balance + " :: Remaining Balance");
-		System.out.println(withdraw + " ::  Withdrawl Amount");
+		System.out.println(balance + " :: Total Balance");
+		System.out.println(deposit + " ::  Credited Amount");
 		
 		statement2.close();
 		con.close();
